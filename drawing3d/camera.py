@@ -20,8 +20,8 @@ class Camera:
         return x[0], y[0], z[0]
 
     @position.setter
-    def position(self, x, y, z):
-        lib.camera_position_set(self.obj, x, y, z)
+    def position(self, rot):
+        lib.camera_position_set(self.obj, *rot)
 
     def add_position(self, x, y, z):
         return lib.camera_position_add(self.obj, x, y, z)
@@ -38,8 +38,8 @@ class Camera:
         return x[0], y[0], z[0]
 
     @rotation.setter
-    def rotation(self, x, y, z):
-        lib.camera_rotation_set(self.obj, x, y, z)
+    def rotation(self, rot):
+        lib.camera_rotation_set(self.obj, *rot)
 
     def add_rotation(self, x, y, z):
         return lib.camera_rotation_add(self.obj, x, y, z)
@@ -71,7 +71,8 @@ class Camera:
         return width[0], height[0]
 
     @viewport.setter
-    def viewport(self, width, height):
+    def viewport(self, viewport):
+        width, height = viewport
         lib.camera_viewport_set(self.obj, width, height)
 
     def preserve_ratio_get(self):
