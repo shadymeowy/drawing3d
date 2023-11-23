@@ -1,12 +1,13 @@
-# Thanks to Job Vranish (https://spin.atomicobject.com/2016/08/26/makefile-c-projects/)
-TARGET_EXEC := libdrawing3d.so
+TARGET_EXEC_SHARED := libdrawing3d.so
+TARGET_EXEC_STATIC := libdrawing3d.a
 
 BUILD_DIR := ./build
 SRC_DIRS := ./src
 INC_DIR := ./include
 CFLAGS := -O2 -fPIC
 CXXFLAGS := -O2 -fPIC
-LDFLAGS := -lSDL2 -lcairo --shared -fPIC
+LDFLAGS_SHARED := -lSDL2 -lcairo --shared -fPIC
+LDFLAGS_STATIC := 
 
 # Find all the C and C++ files we want to compile
 # Note the single quotes around the * expressions. The shell will incorrectly expand these otherwise, but we want to send the * directly to the find command.
@@ -30,9 +31,15 @@ INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 # These files will have .d instead of .o as the output.
 CPPFLAGS := $(INC_FLAGS) -MMD -MP
 
-# The final build step.
-$(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
-	$(CXX) $(OBJS) -o $@ $(LDFLAGS)
+all: $(BUILD_DIR)/$(TARGET_EXEC_SHARED) $(BUILD_DIR)/$(TARGET_EXEC_STATIC)
+
+# The final build step for the shared library
+$(BUILD_DIR)/$(TARGET_EXEC_SHARED): $(OBJS)
+	$(CXX) $(OBJS) -o $@ $(LDFLAGS_SHARED)
+
+# The final build step for the static library
+$(BUILD_DIR)/$(TARGET_EXEC_STATIC): $(OBJS)
+	ar rcs $@ $(OBJS)
 
 # Build step for C source
 $(BUILD_DIR)/%.c.o: %.c
@@ -52,4 +59,4 @@ clean:
 # Include the .d makefiles. The - at the front suppresses the errors of missing
 # Makefiles. Initially, all the .d files will be missing, and we don't want those
 # errors to show up.
--include $(DEPS) 
+-include $(DEPS)
