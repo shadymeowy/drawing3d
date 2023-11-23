@@ -80,5 +80,6 @@ while not event_list.poll():
 
 for window in windows:
     window.destroy()
-draw_list_bg.destroy()
+for draw_list in draw_lists:
+    draw_list.destroy()
 event_list.destroy()
