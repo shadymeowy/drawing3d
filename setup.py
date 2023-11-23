@@ -10,7 +10,7 @@ setup(
     url="https://github.com/shadymeowy/python-drawing3d",
     author="Tolga Demirdal",
     packages=find_packages(),
-    install_requires=["cffi>=1.0.0"],
+    install_requires=["cffi>=1.0.0", "numpy>=1.0.0"],
     setup_requires=["cffi>=1.0.0"],
     cffi_modules=["drawing3d/build_ffi.py:ffibuilder"]
 )
