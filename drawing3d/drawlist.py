@@ -1,5 +1,5 @@
 from ._drawing3d import ffi, lib
-from .helpers import buffer_from, points_from_np, lines_from_np
+from .helpers import *
 
 
 class DrawList:
@@ -53,7 +53,9 @@ class DrawList:
         return lib.draw_list_polyline(self.obj, num_points, points)
 
     def style(self, color, width):
-        color = buffer_from("double[]", color)
+        num, color = doubles_from_np(color)
+        if num != 4:
+            raise ValueError("color must be a 4 length array or equivalent")
         return lib.draw_list_style(self.obj, color, width)
 
     def style2(self, r, g, b, a, width):

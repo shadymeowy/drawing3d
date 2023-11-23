@@ -46,3 +46,14 @@ def lines_from_np(lines):
     lines = lines.flatten()
     lines = ffi.from_buffer("double[]", lines)
     return num_lines, lines
+
+
+def doubles_from_np(obj):
+    if not isinstance(obj, np.ndarray):
+        obj = np.array(obj, dtype=np.double)
+    obj = np.ascontiguousarray(obj)
+    if obj.ndim != 1:
+        raise ValueError("obj must be 1D array")
+    obj = ffi.from_buffer("double[]", obj)
+    num = obj.shape[0]
+    return num, obj
