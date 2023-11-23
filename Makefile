@@ -9,7 +9,7 @@ CFLAGS := -O2 -fPIC
 CXXFLAGS := -O2 -fPIC
 LDFLAGS_SHARED := -lSDL2 -lcairo --shared -fPIC
 LDFLAGS_STATIC := 
-LDFLAGS_EXAMPLE := -lm -Wl,-rpath=$(BUILD_DIR) -ldrawing3d
+LDFLAGS_EXAMPLE := -lm -Wl,-Bstatic -ldrawing3d -Wl,-Bdynamic -lSDL2 -lcairo
 
 # Find all the C and C++ files we want to compile
 # Note the single quotes around the * expressions. The shell will incorrectly expand these otherwise, but we want to send the * directly to the find command.
