@@ -97,8 +97,8 @@ int main()
 
 	// window_save_png(window1, "1.png");
 	// window_save_png(window2, "2.png");
-	// draw_list_render_svg(draw_list, "out1.svg", camera1);
-	// draw_list_render_svg(draw_list, "out2.svg", camera2);
+	// draw_list_save_svg(draw_list, "out1.svg", camera1);
+	// draw_list_save_svg(draw_list, "out2.svg", camera2);
 	// draw_list_destroy(draw_list);
 	window_destroy(window1);
 	window_destroy(window2);

@@ -67,5 +67,20 @@ class DrawList:
     def render(self, cr, camera):
         return lib.draw_list_render(self.obj, cr, camera.obj)
 
-    def render_svg(self, filename, camera):
-        return lib.draw_list_render_svg(self.obj, filename, camera.obj)
+    def save_svg(self, filename, camera):
+        return lib.draw_list_save_svg(self.obj, filename, camera.obj)
+
+    @classmethod
+    def saves_svg(cls, draw_lists, filename, camera):
+        num = len(draw_lists)
+        draw_lists = ffi.new("draw_list_t *[]", [dl.obj for dl in draw_lists])
+        return lib.draw_list_saves_svg(num, draw_lists, filename, camera.obj)
+
+    def save_png(self, filename, camera):
+        return lib.draw_list_save_png(self.obj, filename, camera.obj)
+
+    @classmethod
+    def saves_png(cls, draw_lists, filename, camera):
+        num = len(draw_lists)
+        draw_lists = ffi.new("draw_list_t *[]", [dl.obj for dl in draw_lists])
+        return lib.draw_list_saves_png(num, draw_lists, filename, camera.obj)

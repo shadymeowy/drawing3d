@@ -52,6 +52,7 @@ event_list = EventList()
 stime = time.time()
 prev_t = 0.0
 
+quiting = False
 while not event_list.poll():
     t = time.time() - stime
     dt = t - prev_t
@@ -74,9 +75,14 @@ while not event_list.poll():
 
     for window in windows:
         window.renders(draw_lists)
-        window.handle_events(event_list)
+        if window.handle_events(event_list):
+            quiting = True
+    if quiting:
+        break
     event_list.reset()
 
+DrawList.saves_svg(draw_lists, b"test.svg", camera1)
+DrawList.saves_svg(draw_lists, b"test2.svg", camera2)
 
 for window in windows:
     window.destroy()

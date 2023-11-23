@@ -54,7 +54,13 @@ int draw_list_style2(draw_list_t *draw_list, double r, double g, double b,
 		     double a, double width);
 int draw_list_clear(draw_list_t *draw_list);
 int draw_list_render(draw_list_t *draw_list, cairo_t *cr, camera_t *camera);
-int draw_list_render_svg(draw_list_t *draw_list, const char *filename,
-			 camera_t *camera);
+int draw_list_save_svg(draw_list_t *draw_list, const char *filename,
+		       camera_t *camera);
+int draw_list_saves_svg(size_t num, draw_list_t **draw_list,
+			const char *filename, camera_t *camera);
+int draw_list_save_png(draw_list_t *draw_list, const char *filename,
+		       camera_t *camera);
+int draw_list_saves_png(size_t num, draw_list_t **draw_list,
+			const char *filename, camera_t *camera);
 
 #endif

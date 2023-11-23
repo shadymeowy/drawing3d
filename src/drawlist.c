@@ -271,9 +271,8 @@ void _draw_list_render_style(draw_list_t *draw_list, primitive_t *primitive,
 void _draw_list_render_clear(draw_list_t *draw_list, primitive_t *primitive,
 			     cairo_t *cr, camera_t *camera)
 {
-	// fill with memset
-    int width, height;
-    camera_viewport_get(camera, &width, &height);
+	int width, height;
+	camera_viewport_get(camera, &width, &height);
 	cairo_rectangle(cr, 0, 0, width, height);
 	cairo_fill(cr);
 }
@@ -315,15 +314,48 @@ int draw_list_render(draw_list_t *draw_list, cairo_t *cr, camera_t *camera)
 	return 0;
 }
 
-int draw_list_render_svg(draw_list_t *draw_list, const char *filename,
-			 camera_t *camera)
+int draw_list_save_svg(draw_list_t *draw_list, const char *filename,
+		       camera_t *camera)
+{
+	draw_list_t *draw_lists[1] = { draw_list };
+	return draw_list_saves_svg(1, draw_lists, filename, camera);
+}
+
+int draw_list_saves_svg(size_t num, draw_list_t **draw_list,
+			const char *filename, camera_t *camera)
 {
 	int width, height;
 	camera_viewport_get(camera, &width, &height);
 	cairo_surface_t *surface =
 		cairo_svg_surface_create(filename, width, height);
 	cairo_t *cr = cairo_create(surface);
-	draw_list_render(draw_list, cr, camera);
+	for (int i = 0; i < num; i++) {
+		draw_list_render(draw_list[i], cr, camera);
+	}
+	cairo_destroy(cr);
+	cairo_surface_destroy(surface);
+	return 0;
+}
+
+int draw_list_save_png(draw_list_t *draw_list, const char *filename,
+		       camera_t *camera)
+{
+	draw_list_t *draw_lists[1] = { draw_list };
+	return draw_list_saves_png(1, draw_lists, filename, camera);
+}
+
+int draw_list_saves_png(size_t num, draw_list_t **draw_list,
+			const char *filename, camera_t *camera)
+{
+	int width, height;
+	camera_viewport_get(camera, &width, &height);
+	cairo_surface_t *surface =
+		cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
+	cairo_t *cr = cairo_create(surface);
+	for (int i = 0; i < num; i++) {
+		draw_list_render(draw_list[i], cr, camera);
+	}
+	cairo_surface_write_to_png(surface, filename);
 	cairo_destroy(cr);
 	cairo_surface_destroy(surface);
 	return 0;

@@ -125,19 +125,8 @@ int window_surface_destroy(window_t *window)
 
 int window_render(window_t *window, draw_list_t *draw_list)
 {
-	// window_clear(window);
-	draw_list_render(draw_list, window->cr, window->camera);
-	SDL_Texture *texture = SDL_CreateTextureFromSurface(
-		window->renderer, window->sdl_surface);
-	if (texture == NULL) {
-		fprintf(stderr, "SDL_CreateTextureFromSurface Error: %s\n",
-			SDL_GetError());
-		return 1;
-	}
-	SDL_RenderCopy(window->renderer, texture, NULL, NULL);
-	SDL_RenderPresent(window->renderer);
-	SDL_DestroyTexture(texture);
-	return 0;
+	draw_list_t *draw_lists[1] = { draw_list };
+	return window_renders(window, 1, draw_lists);
 }
 
 int window_renders(window_t *window, size_t num, draw_list_t **draw_list)
