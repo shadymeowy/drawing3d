@@ -213,6 +213,7 @@ void _draw_list_render_point(draw_list_t *draw_list, primitive_t *primitive,
 		if (!b)
 			continue;
 		cairo_move_to(cr, p[0], p[1]);
+		cairo_line_to(cr, p[0], p[1]);
 		cairo_stroke(cr);
 	}
 }

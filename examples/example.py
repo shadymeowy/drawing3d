@@ -48,6 +48,11 @@ points = np.stack((x, y, z), axis=1)
 draw_list_bg.style2(0.0, 0.0, 1.0, 1.0, 5.0)
 draw_list_bg.polyline(points)
 
+random_points = np.random.rand(100, 3) * 2
+random_points[:, 2] = 0.0
+draw_list_bg.style2(0.0, 0.0, 1.0, 1.0, 8.0)
+draw_list_bg.points(random_points)
+
 event_list = EventList()
 stime = time.time()
 prev_t = 0.0
@@ -57,7 +62,7 @@ while not event_list.poll():
     t = time.time() - stime
     dt = t - prev_t
     prev_t = t
-    print('FPS: {:.2f}'.format(1.0 / dt))
+    #print('FPS: {:.2f}'.format(1.0 / dt))
     camera1.add_rotation(0.0, 0.0, dt / 10)
 
     draw_list.empty()
