@@ -195,7 +195,7 @@ int window_handle_events(window_t *window, event_list_t *event_list)
 				double yrel = event.motion.yrel;
 				double drz = -xrel * window->mouse_sensitivity;
 				double dry = -yrel * window->mouse_sensitivity;
-				camera_rotation_add(window->camera, 0.0, dry,
+				camera_rotation_add(window->camera, 0.0, -dry,
 						    drz);
 			}
 			break;

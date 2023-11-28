@@ -154,7 +154,7 @@ int camera_perspective(camera_t *camera, double hfov, double vfov)
 	camera->mi[1 * 4 + 2] = 0.5;
 	camera->mi[2 * 4 + 2] = 1.0;
 	camera->mi[3 * 4 + 2] = 1.0;
-	camera->ratio = fy / fx;
+	camera->ratio = fx / fy;
 	camera_update(camera);
 	return 0;
 }
@@ -250,7 +250,7 @@ int camera_update(camera_t *camera) // will be...
 	matmul(a1, a3, a2, 4, 4, 4);
 	permute(a1, 2, 0, 1, 3);
 	matmul(a1, a2, a3, 4, 4, 4);
-	scale(a1, 1.0, -1.0, 1.0, 1.0);
+	scale(a1, 1.0, 1.0, 1.0, 1.0);
 	matmul(a1, a3, a2, 4, 4, 4);
 	memcpy(a1, camera->mi, sizeof(double) * 16);
 
