@@ -361,3 +361,27 @@ int draw_list_saves_png(size_t num, draw_list_t **draw_list,
 	cairo_surface_destroy(surface);
 	return 0;
 }
+
+int draw_list_save_buffer(draw_list_t *draw_list, uint8_t *buffer,
+			  camera_t *camera)
+{
+	draw_list_t *draw_lists[1] = { draw_list };
+	return draw_list_saves_buffer(1, draw_lists, buffer, camera);
+}
+
+int draw_list_saves_buffer(size_t num, draw_list_t **draw_list,
+			   uint8_t *buffer, camera_t *camera)
+{
+	int width, height;
+	camera_viewport_get(camera, &width, &height);
+	cairo_surface_t *surface =
+		cairo_image_surface_create_for_data(buffer, CAIRO_FORMAT_ARGB32,
+						    width, height, width * 4);
+	cairo_t *cr = cairo_create(surface);
+	for (int i = 0; i < num; i++) {
+		draw_list_render(draw_list[i], cr, camera);
+	}
+	cairo_destroy(cr);
+	cairo_surface_destroy(surface);
+	return 0;
+}

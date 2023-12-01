@@ -62,5 +62,9 @@ int draw_list_save_png(draw_list_t *draw_list, const char *filename,
 		       camera_t *camera);
 int draw_list_saves_png(size_t num, draw_list_t **draw_list,
 			const char *filename, camera_t *camera);
+int draw_list_save_buffer(draw_list_t *draw_list, uint8_t *buffer,
+			  camera_t *camera);
+int draw_list_saves_buffer(size_t num, draw_list_t **draw_list,
+			   uint8_t *buffer, camera_t *camera);
 
 #endif

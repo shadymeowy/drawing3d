@@ -84,3 +84,20 @@ class DrawList:
         num = len(draw_lists)
         draw_lists = ffi.new("draw_list_t *[]", [dl.obj for dl in draw_lists])
         return lib.draw_list_saves_png(num, draw_lists, filename, camera.obj)
+
+    def save_buffer(self, camera):
+        width, height = camera.viewport
+        buffer = np.zeros((height, width, 4), dtype=np.uint8)
+        buffer_ffi = ffi.from_buffer("uint8_t*", buffer)
+        lib.draw_list_save_buffer(self.obj, buffer_ffi, camera.obj)
+        return buffer
+
+    @classmethod
+    def saves_buffer(cls, draw_lists, camera):
+        width, height = camera.viewport
+        buffer = np.zeros((height, width, 4), dtype=np.uint8)
+        buffer_ffi = ffi.from_buffer("uint8_t*", buffer)
+        num = len(draw_lists)
+        draw_lists = ffi.new("draw_list_t *[]", [dl.obj for dl in draw_lists])
+        lib.draw_list_saves_buffer(num, draw_lists, buffer_ffi, camera.obj)
+        return buffer
