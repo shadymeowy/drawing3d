@@ -45,34 +45,34 @@ class Camera:
         return lib.camera_rotation_add(self.obj, x, y, z)
 
     @property
-    def world_position(self):
+    def object_position(self):
         x = ffi.new("double*")
         y = ffi.new("double*")
         z = ffi.new("double*")
-        lib.camera_world_position_get(self.obj, x, y, z)
+        lib.camera_object_position_get(self.obj, x, y, z)
         return x[0], y[0], z[0]
 
-    @world_position.setter
-    def world_position(self, rot):
-        lib.camera_world_position_set(self.obj, *rot)
+    @object_position.setter
+    def object_position(self, rot):
+        lib.camera_object_position_set(self.obj, *rot)
 
-    def add_world_position(self, x, y, z):
-        return lib.camera_world_position_add(self.obj, x, y, z)
+    def add_object_position(self, x, y, z):
+        return lib.camera_object_position_add(self.obj, x, y, z)
 
     @property
-    def world_rotation(self):
+    def object_rotation(self):
         x = ffi.new("double*")
         y = ffi.new("double*")
         z = ffi.new("double*")
-        lib.camera_world_rotation_get(self.obj, x, y, z)
+        lib.camera_object_rotation_get(self.obj, x, y, z)
         return x[0], y[0], z[0]
 
-    @world_rotation.setter
-    def world_rotation(self, rot):
-        lib.camera_world_rotation_set(self.obj, *rot)
+    @object_rotation.setter
+    def object_rotation(self, rot):
+        lib.camera_object_rotation_set(self.obj, *rot)
 
-    def add_world_rotation(self, x, y, z):
-        return lib.camera_world_rotation_add(self.obj, x, y, z)
+    def add_object_rotation(self, x, y, z):
+        return lib.camera_object_rotation_add(self.obj, x, y, z)
 
     @property
     def distance(self):

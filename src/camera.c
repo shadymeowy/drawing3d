@@ -11,7 +11,7 @@ struct camera_s {
 	// extrinsic parameters
 	double position[3];
 	double rotation[3];
-	// "world" position and rotation
+	// "object" position and rotation
 	double wposition[3];
 	double wrotation[3];
 	double distance; // for spherical camera
@@ -126,7 +126,7 @@ int camera_rotation_add(camera_t *camera, double x, double y, double z)
 	return 0;
 }
 
-int camera_world_position_set(camera_t *camera, double x, double y, double z)
+int camera_object_position_set(camera_t *camera, double x, double y, double z)
 {
 	camera->wposition[0] = x;
 	camera->wposition[1] = y;
@@ -135,7 +135,7 @@ int camera_world_position_set(camera_t *camera, double x, double y, double z)
 	return 0;
 }
 
-int camera_world_position_get(camera_t *camera, double *x, double *y, double *z)
+int camera_object_position_get(camera_t *camera, double *x, double *y, double *z)
 {
 	*x = camera->wposition[0];
 	*y = camera->wposition[1];
@@ -143,7 +143,7 @@ int camera_world_position_get(camera_t *camera, double *x, double *y, double *z)
 	return 0;
 }
 
-int camera_world_position_add(camera_t *camera, double x, double y, double z)
+int camera_object_position_add(camera_t *camera, double x, double y, double z)
 {
 	camera->wposition[0] += x;
 	camera->wposition[1] += y;
@@ -152,7 +152,7 @@ int camera_world_position_add(camera_t *camera, double x, double y, double z)
 	return 0;
 }
 
-int camera_world_rotation_set(camera_t *camera, double x, double y, double z)
+int camera_object_rotation_set(camera_t *camera, double x, double y, double z)
 {
 	camera->wrotation[0] = x;
 	camera->wrotation[1] = y;
@@ -161,7 +161,7 @@ int camera_world_rotation_set(camera_t *camera, double x, double y, double z)
 	return 0;
 }
 
-int camera_world_rotation_get(camera_t *camera, double *x, double *y, double *z)
+int camera_object_rotation_get(camera_t *camera, double *x, double *y, double *z)
 {
 	*x = camera->wrotation[0];
 	*y = camera->wrotation[1];
@@ -169,7 +169,7 @@ int camera_world_rotation_get(camera_t *camera, double *x, double *y, double *z)
 	return 0;
 }
 
-int camera_world_rotation_add(camera_t *camera, double x, double y, double z)
+int camera_object_rotation_add(camera_t *camera, double x, double y, double z)
 {
 	camera->wrotation[0] += x;
 	camera->wrotation[1] += y;
