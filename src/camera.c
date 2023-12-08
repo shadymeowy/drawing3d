@@ -340,7 +340,7 @@ int camera_update(camera_t *camera)
 	return 0;
 }
 
-static int matmul(double *a, double *b, double *c, int n, int m, int r)
+static int matmul(double *a, double *b, double *restrict c, int n, int m, int r)
 {
 	// a: n x m
 	// b: m x r
