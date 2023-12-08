@@ -66,7 +66,6 @@ int camera_position_set(camera_t *camera, double x, double y, double z)
 	camera->position[0] = x;
 	camera->position[1] = y;
 	camera->position[2] = z;
-	camera_update(camera);
 	return 0;
 }
 
@@ -83,7 +82,6 @@ int camera_position_add(camera_t *camera, double x, double y, double z)
 	camera->position[0] += x;
 	camera->position[1] += y;
 	camera->position[2] += z;
-	camera_update(camera);
 	return 0;
 }
 
@@ -95,7 +93,6 @@ int camera_move(camera_t *camera, double x, double y, double z)
 	camera->position[0] += x * cz + y * sz;
 	camera->position[1] += -x * sz + y * cz;
 	camera->position[2] += z;
-	camera_update(camera);
 	return 0;
 }
 
@@ -104,7 +101,6 @@ int camera_rotation_set(camera_t *camera, double x, double y, double z)
 	camera->rotation[0] = x;
 	camera->rotation[1] = y;
 	camera->rotation[2] = z;
-	camera_update(camera);
 	return 0;
 }
 
@@ -113,7 +109,6 @@ int camera_rotation_get(camera_t *camera, double *x, double *y, double *z)
 	*x = camera->rotation[0];
 	*y = camera->rotation[1];
 	*z = camera->rotation[2];
-	camera_update(camera);
 	return 0;
 }
 
@@ -122,7 +117,6 @@ int camera_rotation_add(camera_t *camera, double x, double y, double z)
 	camera->rotation[0] += x;
 	camera->rotation[1] += y;
 	camera->rotation[2] += z;
-	camera_update(camera);
 	return 0;
 }
 
@@ -131,7 +125,6 @@ int camera_object_position_set(camera_t *camera, double x, double y, double z)
 	camera->wposition[0] = x;
 	camera->wposition[1] = y;
 	camera->wposition[2] = z;
-	camera_update(camera);
 	return 0;
 }
 
@@ -148,7 +141,6 @@ int camera_object_position_add(camera_t *camera, double x, double y, double z)
 	camera->wposition[0] += x;
 	camera->wposition[1] += y;
 	camera->wposition[2] += z;
-	camera_update(camera);
 	return 0;
 }
 
@@ -157,7 +149,6 @@ int camera_object_rotation_set(camera_t *camera, double x, double y, double z)
 	camera->wrotation[0] = x;
 	camera->wrotation[1] = y;
 	camera->wrotation[2] = z;
-	camera_update(camera);
 	return 0;
 }
 
@@ -174,14 +165,12 @@ int camera_object_rotation_add(camera_t *camera, double x, double y, double z)
 	camera->wrotation[0] += x;
 	camera->wrotation[1] += y;
 	camera->wrotation[2] += z;
-	camera_update(camera);
 	return 0;
 }
 
 int camera_distance_set(camera_t *camera, double distance)
 {
 	camera->distance = distance;
-	camera_update(camera);
 	return 0;
 }
 
@@ -194,7 +183,6 @@ int camera_distance_get(camera_t *camera, double *distance)
 int camera_distance_add(camera_t *camera, double distance)
 {
 	camera->distance += distance;
-	camera_update(camera);
 	return 0;
 }
 
@@ -212,7 +200,6 @@ int camera_perspective(camera_t *camera, double hfov, double vfov)
 	camera->mi[2 * 4 + 2] = 1.0;
 	camera->mi[3 * 4 + 2] = 1.0;
 	camera->ratio = fx / fy;
-	camera_update(camera);
 	return 0;
 }
 
@@ -228,7 +215,6 @@ int camera_orthographic(camera_t *camera, double scale_x, double scale_y)
 	camera->mi[0 * 4 + 3] = 0.5;
 	camera->mi[1 * 4 + 3] = 0.5;
 	camera->ratio = scale_y / scale_x;
-	camera_update(camera);
 	return 0;
 }
 
@@ -236,7 +222,6 @@ int camera_viewport_set(camera_t *camera, int width, int height)
 {
 	camera->width = width;
 	camera->height = height;
-	camera_update(camera);
 	return 0;
 }
 

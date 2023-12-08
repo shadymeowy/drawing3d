@@ -280,6 +280,7 @@ void _draw_list_render_clear(draw_list_t *draw_list, primitive_t *primitive,
 
 int draw_list_render(draw_list_t *draw_list, cairo_t *cr, camera_t *camera)
 {
+	camera_update(camera);
 	cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
 	for (int i = 0; i < draw_list->length; i++) {
 		primitive_t *primitive = &draw_list->primitives[i];
