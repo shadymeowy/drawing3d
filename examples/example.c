@@ -85,8 +85,12 @@ int main()
 		draw_list_style2(draw_list, 0.0, 0.0, 1.0, 1.0, 4.0);
 		draw_sin(draw_list, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, t);
 		t += 1 / 120.0;
-		window_renders(window1, 2, draw_lists);
-		window_renders(window2, 2, draw_lists);
+		for (int i = 0 ; i < 2; i++) {
+			window_render(window1, draw_lists[i]);
+			window_render(window2, draw_lists[i]);
+		}
+		window_render_end(window1);
+		window_render_end(window2);
 
 		if (window_handle_events(window1, event_list))
 			break;

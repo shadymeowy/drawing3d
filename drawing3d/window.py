@@ -22,10 +22,8 @@ class Window:
     def render(self, draw_list):
         return lib.window_render(self.obj, draw_list.obj)
 
-    def renders(self, draw_lists):
-        num = len(draw_lists)
-        draw_lists = ffi.new("draw_list_t *[]", [dl.obj for dl in draw_lists])
-        return lib.window_renders(self.obj, num, draw_lists)
+    def render_end(self):
+        return lib.window_render_end(self.obj)
 
     def handle_events(self, event_list):
         return lib.window_handle_events(self.obj, event_list.obj)

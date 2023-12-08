@@ -24,5 +24,6 @@ class Simple3D:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.window.render(self.draw_list)
+        self.window.render_end()
         if self.window.handle_events(self.event_list):
             self.quiting = True

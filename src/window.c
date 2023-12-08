@@ -125,16 +125,11 @@ int window_surface_destroy(window_t *window)
 
 int window_render(window_t *window, draw_list_t *draw_list)
 {
-	draw_list_t *draw_lists[1] = { draw_list };
-	return window_renders(window, 1, draw_lists);
+	return draw_list_render(draw_list, window->cr, window->camera);
 }
 
-int window_renders(window_t *window, size_t num, draw_list_t **draw_list)
+int window_render_end(window_t *window)
 {
-	// window_clear(window);
-	for (int i = 0; i < num; i++) {
-		draw_list_render(draw_list[i], window->cr, window->camera);
-	}
 	SDL_Texture *texture = SDL_CreateTextureFromSurface(
 		window->renderer, window->sdl_surface);
 	if (texture == NULL) {

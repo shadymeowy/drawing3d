@@ -97,7 +97,9 @@ while not event_list.poll():
     # Render the draw lists on the windows
     # and handle events
     for window in windows:
-        window.renders(draw_lists)
+        for drawlist in draw_lists:
+            window.render(drawlist)
+        window.render_end()
         if window.handle_events(event_list):
             quiting = True
     if quiting:

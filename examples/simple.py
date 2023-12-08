@@ -5,7 +5,7 @@ from drawing3d import Simple3D
 simple = Simple3D((720, 720), 45.0, "test")
 # Set position and rotation of the camera
 simple.camera.position = (0.5, 0.5, 0.5)
-simple.camera.rotation = (0.0, -1.0, 0.0)
+simple.camera.rotation = (0.0, 1.0, 0.0)
 # Spherical camera distance to the camera origin
 simple.camera.distance = 5.0
 
