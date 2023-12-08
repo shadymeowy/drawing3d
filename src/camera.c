@@ -11,6 +11,9 @@ struct camera_s {
 	// extrinsic parameters
 	double position[3];
 	double rotation[3];
+	// "world" position and rotation
+	double wposition[3];
+	double wrotation[3];
 	double distance; // for spherical camera
 	// intrinsic parameters, homogeneous
 	double mi[16];
@@ -36,6 +39,8 @@ camera_t *camera_create()
 	for (int i = 0; i < 3; i++) {
 		camera->position[i] = 0.0;
 		camera->rotation[i] = 0.0;
+		camera->wposition[i] = 0.0;
+		camera->wrotation[i] = 0.0;
 	}
 	for (int i = 0; i < 16; i++) {
 		camera->m[i] = 0.0;
@@ -117,6 +122,58 @@ int camera_rotation_add(camera_t *camera, double x, double y, double z)
 	camera->rotation[0] += x;
 	camera->rotation[1] += y;
 	camera->rotation[2] += z;
+	camera_update(camera);
+	return 0;
+}
+
+int camera_world_position_set(camera_t *camera, double x, double y, double z)
+{
+	camera->wposition[0] = x;
+	camera->wposition[1] = y;
+	camera->wposition[2] = z;
+	camera_update(camera);
+	return 0;
+}
+
+int camera_world_position_get(camera_t *camera, double *x, double *y, double *z)
+{
+	*x = camera->wposition[0];
+	*y = camera->wposition[1];
+	*z = camera->wposition[2];
+	return 0;
+}
+
+int camera_world_position_add(camera_t *camera, double x, double y, double z)
+{
+	camera->wposition[0] += x;
+	camera->wposition[1] += y;
+	camera->wposition[2] += z;
+	camera_update(camera);
+	return 0;
+}
+
+int camera_world_rotation_set(camera_t *camera, double x, double y, double z)
+{
+	camera->wrotation[0] = x;
+	camera->wrotation[1] = y;
+	camera->wrotation[2] = z;
+	camera_update(camera);
+	return 0;
+}
+
+int camera_world_rotation_get(camera_t *camera, double *x, double *y, double *z)
+{
+	*x = camera->wrotation[0];
+	*y = camera->wrotation[1];
+	*z = camera->wrotation[2];
+	return 0;
+}
+
+int camera_world_rotation_add(camera_t *camera, double x, double y, double z)
+{
+	camera->wrotation[0] += x;
+	camera->wrotation[1] += y;
+	camera->wrotation[2] += z;
 	camera_update(camera);
 	return 0;
 }
@@ -223,37 +280,44 @@ bool camera_project(camera_t *camera, double *p, double *q)
 	return p2[3] > 0.0;
 }
 
-int camera_update(camera_t *camera) // will be...
+int camera_update(camera_t *camera)
 {
+	double acc[16];
 	double a1[16];
 	double a2[16];
-	double a3[16];
 
-	// a1 <- R
-	// a2 <- T
-	// a3 <- R * T (a1 * a2)
-	// a1 <- Ts
-	// a2 <- Ts * a3 (a1 * a3)
-	// a1 <- permute
-	// a3 <- permute * a2 (a1 * a2)
-	// a1 <- eye
-	// a2 <- eye * a3 (a1 * a3)
-	// a1 <- Mi
-	// a3 <- Mi * a3 (a1 * a2)
-	// => a3 = Mi * eye * Ts * R * T
-	rotxyz(a1, camera->rotation[0], camera->rotation[1],
-	       camera->rotation[2]);
-	translate(a2, -camera->position[0], -camera->position[1],
+	// Mi * permute * Ts * R^-1 * T^-1 * Tw * Rw
+	eye(acc, 4);
+
+	rotxyz(a1, camera->wrotation[0], camera->wrotation[1],
+	       camera->wrotation[2]);
+	memcpy(a2, acc, sizeof(double) * 16);
+	matmul(a1, a2, acc, 4, 4, 4);
+
+	translate(a1, camera->wposition[0], camera->wposition[1],
+		  camera->wposition[2]);
+	memcpy(a2, acc, sizeof(double) * 16);
+	matmul(a1, a2, acc, 4, 4, 4);
+
+	translate(a1, -camera->position[0], -camera->position[1],
 		  -camera->position[2]);
-	matmul(a1, a2, a3, 4, 4, 4);
-	translate(a1, camera->distance, 0.0, 0.0);
-	matmul(a1, a3, a2, 4, 4, 4);
-	permute(a1, 2, 0, 1, 3);
-	matmul(a1, a2, a3, 4, 4, 4);
-	scale(a1, 1.0, 1.0, 1.0, 1.0);
-	matmul(a1, a3, a2, 4, 4, 4);
-	memcpy(a1, camera->mi, sizeof(double) * 16);
+	memcpy(a2, acc, sizeof(double) * 16);
+	matmul(a1, a2, acc, 4, 4, 4);
 
+	rotxyz(a1, -camera->rotation[0], -camera->rotation[1],
+	       -camera->rotation[2]);
+	memcpy(a2, acc, sizeof(double) * 16);
+	matmul(a1, a2, acc, 4, 4, 4);
+
+	translate(a1, camera->distance, 0.0, 0.0);
+	memcpy(a2, acc, sizeof(double) * 16);
+	matmul(a1, a2, acc, 4, 4, 4);
+
+	permute(a1, 2, 0, 1, 3);
+	memcpy(a2, acc, sizeof(double) * 16);
+	matmul(a1, a2, acc, 4, 4, 4);
+
+	memcpy(a1, camera->mi, sizeof(double) * 16);
 	double new_ratio = camera->height / camera->width;
 	double width = camera->width;
 	double height = camera->height;
@@ -270,8 +334,9 @@ int camera_update(camera_t *camera) // will be...
 	a1[1 * 4 + 2] *= camera->height;
 	a1[0 * 4 + 3] *= camera->width;
 	a1[1 * 4 + 3] *= camera->height;
-	matmul(a1, a2, a3, 4, 4, 4);
-	memcpy(camera->m, a3, sizeof(double) * 16);
+	memcpy(a2, acc, sizeof(double) * 16);
+	matmul(a1, a2, acc, 4, 4, 4);
+	memcpy(camera->m, acc, sizeof(double) * 16);
 	return 0;
 }
 
