@@ -25,6 +25,11 @@ class Window:
     def render_end(self):
         return lib.window_render_end(self.obj)
 
+    def render_at(self, draw_list, pos, att):
+        x, y, z = pos
+        rx, ry, rz = att
+        return lib.window_render_at(self.obj, draw_list.obj, x, y, z, rx, ry, rz)
+
     def handle_events(self, event_list):
         return lib.window_handle_events(self.obj, event_list.obj)
 

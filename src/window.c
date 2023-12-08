@@ -128,6 +128,21 @@ int window_render(window_t *window, draw_list_t *draw_list)
 	return draw_list_render(draw_list, window->cr, window->camera);
 }
 
+int window_render_at(window_t *window, draw_list_t *draw_list, double x,
+		     double y, double z, double rx, double ry, double rz)
+{
+	// write object position and rotation and restore later
+	double tx, ty, tz, trx, try, trz;
+	camera_object_position_get(window->camera, &tx, &ty, &tz);
+	camera_object_rotation_get(window->camera, &trx, &try, &trz);
+	camera_object_position_set(window->camera, x, y, z);
+	camera_object_rotation_set(window->camera, rx, ry, rz);
+	int ret = draw_list_render(draw_list, window->cr, window->camera);
+	camera_object_position_set(window->camera, tx, ty, tz);
+	camera_object_rotation_set(window->camera, trx, try, trz);
+	return ret;
+}
+
 int window_render_end(window_t *window)
 {
 	SDL_Texture *texture = SDL_CreateTextureFromSurface(

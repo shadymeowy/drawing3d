@@ -15,6 +15,8 @@ int window_surface_init(window_t *window);
 int window_surface_destroy(window_t *window);
 int window_clear(window_t *window);
 int window_render(window_t *window, draw_list_t *draw_list);
+int window_render_at(window_t *window, draw_list_t *draw_list, double x,
+		     double y, double z, double rx, double ry, double rz);
 int window_render_end(window_t *window);
 int window_handle_events(window_t *window, event_list_t *event_list);
 int window_do_key_action(window_t *window, key_action_t action);
