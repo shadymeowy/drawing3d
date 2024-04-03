@@ -83,9 +83,6 @@ int window_surface_init(window_t *window)
 	int win_w, win_h, rdr_w, rdr_h;
 	SDL_GetWindowSize(window->window, &win_w, &win_h);
 	SDL_GetRendererOutputSize(window->renderer, &rdr_w, &rdr_h);
-	int cr_x_multiplier = rdr_w / win_w;
-	int cr_y_multiplier = rdr_h / win_h;
-
 	window->sdl_surface = SDL_CreateRGBSurface(
 		0, rdr_w, rdr_h, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0);
 	if (window->sdl_surface == NULL) {
@@ -102,8 +99,6 @@ int window_surface_init(window_t *window)
 		fprintf(stderr, "cairo_image_surface_create_for_data Error\n");
 		return 1;
 	}
-	cairo_surface_set_device_scale(window->cr_surface, cr_x_multiplier,
-				       cr_y_multiplier);
 
 	window->cr = cairo_create(window->cr_surface);
 	if (window->cr == NULL) {
