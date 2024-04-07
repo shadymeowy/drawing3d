@@ -1,0 +1,10 @@
+[tool.cibuildwheel]
+# Build on manylinux and macOS
+
+[tool.cibuildwheel.linux]
+before-all = "yum install -y SDL2-devel cairo-devel"
+environment = { CIBW_SKIP = "*-manylinux_i686" }
+
+[tool.cibuildwheel.macos]
+before-all = "brew install sdl2 cairo"
+environment = { PKG_CONFIG_PATH = "/usr/local/opt/libffi/lib/pkgconfig" }
