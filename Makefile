@@ -1,15 +1,24 @@
-TARGET_EXEC_SHARED := libdrawing3d.so
 TARGET_EXEC_STATIC := libdrawing3d.a
 
 BUILD_DIR := ./build
 SRC_DIRS := ./src
 INC_DIR := ./include
 EXAMPLE_DIR := ./examples
-CFLAGS := -O2 -fPIC
-CXXFLAGS := -O2 -fPIC
-LDFLAGS_SHARED := -lSDL2 -lcairo --shared -fPIC
-LDFLAGS_STATIC := 
-LDFLAGS_EXAMPLE := -lm -Wl,-Bstatic -ldrawing3d -Wl,-Bdynamic -lSDL2 -lcairo
+CFLAGS := -O2 $(shell pkg-config --cflags cairo) $(shell pkg-config --cflags sdl2)
+CXXFLAGS := -O2 $(shell pkg-config --cflags cairo) $(shell pkg-config --cflags sdl2)
+LDFLAGS_STATIC := $(shell pkg-config --libs cairo) $(shell pkg-config --libs sdl2) -lm
+LDFLAGS_EXAMPLE := -ldrawing3d $(LDFLAGS_STATIC)
+
+# check platform for adding -fpic or equivalent
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+	CFLAGS += -fPIC
+	CXXFLAGS += -fPIC
+endif
+ifeq ($(UNAME_S),Darwin)
+	CFLAGS += 
+	CXXFLAGS += 
+endif
 
 # Find all the C and C++ files we want to compile
 # Note the single quotes around the * expressions. The shell will incorrectly expand these otherwise, but we want to send the * directly to the find command.
@@ -37,11 +46,7 @@ INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 # These files will have .d instead of .o as the output.
 CPPFLAGS := $(INC_FLAGS) -MMD -MP
 
-all: $(BUILD_DIR)/$(TARGET_EXEC_SHARED) $(BUILD_DIR)/$(TARGET_EXEC_STATIC) $(EXAMPLE_EXECS)
-
-# The final build step for the shared library
-$(BUILD_DIR)/$(TARGET_EXEC_SHARED): $(OBJS)
-	$(CXX) $(OBJS) -o $@ $(LDFLAGS_SHARED)
+all: $(BUILD_DIR)/$(TARGET_EXEC_STATIC) $(EXAMPLE_EXECS)
 
 # The final build step for the static library
 $(BUILD_DIR)/$(TARGET_EXEC_STATIC): $(OBJS)
@@ -58,7 +63,7 @@ $(BUILD_DIR)/%.cpp.o: %.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
 # Build each example
-$(EXAMPLE_EXECS): % : $(EXAMPLE_DIR)/%.c $(BUILD_DIR)/$(TARGET_EXEC_SHARED)
+$(EXAMPLE_EXECS): % : $(EXAMPLE_DIR)/%.c $(BUILD_DIR)/$(TARGET_EXEC_STATIC)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $(BUILD_DIR)/$@ $< $(LDFLAGS_EXAMPLE) -L$(BUILD_DIR)
 
 .PHONY: clean

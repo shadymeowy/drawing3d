@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
-
 import subprocess
+
 subprocess.run(["make", "all"])
 
 setup(
