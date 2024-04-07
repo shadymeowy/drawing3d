@@ -2,7 +2,18 @@
 # Build on manylinux and macOS
 
 [tool.cibuildwheel.linux]
-before-all = "yum install -y SDL2-devel cairo-devel"
+before-all = """
+    if command -v apt-get; then
+        apt-get update
+        apt-get install -y libsdl2-dev libcairo2-dev
+    elif command -v dnf; then
+        dnf install -y SDL2-devel cairo-devel
+    elif command -v yum; then
+        yum install -y SDL2-devel cairo-devel
+    elif command -v apk; then
+        apk add sdl2-dev cairo-dev
+    fi
+"""
 environment = { CIBW_SKIP = "*-manylinux_i686" }
 
 [tool.cibuildwheel.macos]
