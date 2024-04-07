@@ -21,12 +21,16 @@ struct window_s {
 window_t *window_create(int width, int height, char *title)
 {
 	window_t *window = malloc(sizeof(window_t));
-	window->title = strdup(title);
+	window->title = malloc(strlen(title) + 1);
+	if (window->title == NULL) {
+		fprintf(stderr, "Memory allocation error\n");
+		exit(1);
+	}
+	strcpy(window->title, title);
 	window->window =
-		SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED,
-				 SDL_WINDOWPOS_UNDEFINED, width, height,
-				 SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI |
-					 SDL_WINDOW_RESIZABLE);
+		SDL_CreateWindow(window->title, SDL_WINDOWPOS_CENTERED,
+				 SDL_WINDOWPOS_CENTERED, width, height,
+				 SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN);
 	if (window->window == NULL) {
 		fprintf(stderr, "SDL_CreateWindow Error: %s\n", SDL_GetError());
 		exit(1);
@@ -291,7 +295,7 @@ int window_save_png(window_t *window, char *filename)
 
 int window_save(window_t *window, uint8_t *buffer, size_t size)
 {
-	if (size < window->sdl_surface->w * window->sdl_surface->h * 3)
+	if ((int)size < window->sdl_surface->w * window->sdl_surface->h * 3)
 		return 1;
 	SDL_Surface *surface = SDL_CreateRGBSurfaceFrom(
 		buffer, window->sdl_surface->w, window->sdl_surface->h, 24,

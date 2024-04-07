@@ -28,7 +28,6 @@ static int rotxyz(double *m, double x, double y, double z);
 static int translate(double *m, double x, double y, double z);
 static int eye(double *m, int n);
 static int permute(double *m, int i0, int i1, int i2, int i3);
-static int scale(double *m, double x, double y, double z, double w);
 
 camera_t *camera_create()
 {
@@ -405,15 +404,5 @@ static int permute(double *m, int i0, int i1, int i2, int i3)
 	m[i1 * 4 + 1] = 1.0;
 	m[i2 * 4 + 2] = 1.0;
 	m[i3 * 4 + 3] = 1.0;
-	return 0;
-}
-
-static int scale(double *m, double x, double y, double z, double w)
-{
-	memset(m, 0, sizeof(double) * 16);
-	m[0 * 4 + 0] = x;
-	m[1 * 4 + 1] = y;
-	m[2 * 4 + 2] = z;
-	m[3 * 4 + 3] = w;
 	return 0;
 }

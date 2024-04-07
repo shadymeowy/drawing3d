@@ -190,7 +190,7 @@ void _draw_list_render_line(draw_list_t *draw_list, primitive_t *primitive,
 	size_t num = primitive->length / 6;
 	double p1[2], p2[2];
 	bool b1, b2;
-	for (int i = 0; i < num; i++) {
+	for (int i = 0; i < (int)num; i++) {
 		b1 = camera_project(camera, &points[i * 6], p1);
 		b2 = camera_project(camera, &points[i * 6 + 3], p2);
 		if (!b1 || !b2)
@@ -208,7 +208,7 @@ void _draw_list_render_point(draw_list_t *draw_list, primitive_t *primitive,
 	size_t num_points = primitive->length / 3;
 	double p[2];
 	bool b;
-	for (int i = 0; i < num_points; i++) {
+	for (int i = 0; i < (int)num_points; i++) {
 		b = camera_project(camera, &points[i * 3], p);
 		if (!b)
 			continue;
@@ -225,7 +225,7 @@ void _draw_list_render_polygon(draw_list_t *draw_list, primitive_t *primitive,
 	size_t num_points = primitive->length / 3;
 	double p[2];
 	bool b = false;
-	for (int i = 0; i < num_points; i++) {
+	for (int i = 0; i < (int)num_points; i++) {
 		b = camera_project(camera, &points[i * 3], p);
 		if (!b)
 			continue;
@@ -247,7 +247,7 @@ void _draw_list_render_polyline(draw_list_t *draw_list, primitive_t *primitive,
 	double p[2];
 	bool b1, b2;
 	b1 = camera_project(camera, &points[0], p);
-	for (int i = 0; i < num_points; i++) {
+	for (int i = 0; i < (int)num_points; i++) {
 		b2 = camera_project(camera, &points[i * 3], p);
 		if (b1 && b2) {
 			cairo_line_to(cr, p[0], p[1]);
@@ -263,6 +263,7 @@ void _draw_list_render_polyline(draw_list_t *draw_list, primitive_t *primitive,
 void _draw_list_render_style(draw_list_t *draw_list, primitive_t *primitive,
 			     cairo_t *cr, camera_t *camera)
 {
+	(void)camera;
 	double *color = draw_list->buffer + primitive->index;
 	double width = draw_list->buffer[primitive->index + 4];
 	cairo_set_source_rgba(cr, color[0], color[1], color[2], color[3]);
@@ -272,6 +273,9 @@ void _draw_list_render_style(draw_list_t *draw_list, primitive_t *primitive,
 void _draw_list_render_clear(draw_list_t *draw_list, primitive_t *primitive,
 			     cairo_t *cr, camera_t *camera)
 {
+	(void)primitive;
+	(void)camera;
+	(void)draw_list;
 	int width, height;
 	camera_viewport_get(camera, &width, &height);
 	cairo_rectangle(cr, 0, 0, width, height);
@@ -282,7 +286,7 @@ int draw_list_render(draw_list_t *draw_list, cairo_t *cr, camera_t *camera)
 {
 	camera_update(camera);
 	cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
-	for (int i = 0; i < draw_list->length; i++) {
+	for (int i = 0; i < (int)draw_list->length; i++) {
 		primitive_t *primitive = &draw_list->primitives[i];
 		switch (primitive->type) {
 		case PRIMITIVE_TYPE_LINE:
@@ -331,7 +335,7 @@ int draw_list_saves_svg(size_t num, draw_list_t **draw_list,
 	cairo_surface_t *surface =
 		cairo_svg_surface_create(filename, width, height);
 	cairo_t *cr = cairo_create(surface);
-	for (int i = 0; i < num; i++) {
+	for (int i = 0; i < (int)num; i++) {
 		draw_list_render(draw_list[i], cr, camera);
 	}
 	cairo_destroy(cr);
@@ -354,7 +358,7 @@ int draw_list_saves_png(size_t num, draw_list_t **draw_list,
 	cairo_surface_t *surface =
 		cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
 	cairo_t *cr = cairo_create(surface);
-	for (int i = 0; i < num; i++) {
+	for (int i = 0; i < (int)num; i++) {
 		draw_list_render(draw_list[i], cr, camera);
 	}
 	cairo_surface_write_to_png(surface, filename);
@@ -379,7 +383,7 @@ int draw_list_saves_buffer(size_t num, draw_list_t **draw_list,
 		cairo_image_surface_create_for_data(buffer, CAIRO_FORMAT_ARGB32,
 						    width, height, width * 4);
 	cairo_t *cr = cairo_create(surface);
-	for (int i = 0; i < num; i++) {
+	for (int i = 0; i < (int)num; i++) {
 		draw_list_render(draw_list[i], cr, camera);
 	}
 	cairo_destroy(cr);

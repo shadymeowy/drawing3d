@@ -54,7 +54,7 @@ int event_list_length(event_list_t *event_list)
 
 int event_list_get(event_list_t *event_list, int index, SDL_Event *event)
 {
-	if (index < 0 || index >= event_list->length)
+	if (index < 0 || index >= (int)event_list->length)
 		return 1;
 	*event = event_list->events[index];
 	return 0;

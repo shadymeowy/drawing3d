@@ -27,7 +27,7 @@ typedef struct {
 	key_action_t action;
 } keymapping_t;
 
-static keymapping_t default_spherical_keymap[] = {
+static keymapping_t default_spherical_keymap[] __attribute__((unused)) = {
 	{ SDL_SCANCODE_LEFT, KEY_ACTION_RZ_INC },
 	{ SDL_SCANCODE_RIGHT, KEY_ACTION_RZ_DEC },
 	{ SDL_SCANCODE_UP, KEY_ACTION_RY_DEC },
@@ -43,7 +43,7 @@ static keymapping_t default_spherical_keymap[] = {
 	{ 0, 0 },
 };
 
-static keymapping_t default_keymap[] = {
+static keymapping_t default_keymap[] __attribute__((unused)) = {
 	{ SDL_SCANCODE_LEFT, KEY_ACTION_RZ_DEC },
 	{ SDL_SCANCODE_RIGHT, KEY_ACTION_RZ_INC },
 	{ SDL_SCANCODE_UP, KEY_ACTION_RY_DEC },
@@ -58,5 +58,5 @@ static keymapping_t default_keymap[] = {
 	{ SDL_SCANCODE_LSHIFT, KEY_ACTION_Z_DEC },
 	{ 0, 0 },
 };
- 
+
 #endif

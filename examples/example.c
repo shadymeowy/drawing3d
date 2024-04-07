@@ -5,6 +5,8 @@
 
 #include "drawing3d.h"
 
+#define PI 3.14159265358979323846
+
 void draw_cube(draw_list_t *draw_list, double x0, double y0, double z0,
 	       double x1, double y1, double z1)
 {
@@ -71,11 +73,11 @@ int main()
 	camera_t *camera2 = window_camera_get(window2);
 	window_controllable_set(window2, false);
 
-	camera_perspective(camera1, M_PI / 4.0, M_PI / 4.0);
+	camera_perspective(camera1, PI / 4.0, PI / 4.0);
 	camera_position_set(camera1, 0.0, 0.0, 0.0);
 	camera_distance_set(camera1, 0.0);
 	camera_orthographic(camera2, 0.25, 0.25);
-	camera_rotation_set(camera2, 0.0, -M_PI / 2.0, 0.0);
+	camera_rotation_set(camera2, 0.0, -PI / 2.0, 0.0);
 
 	draw_list_t *draw_list = draw_list_create();
 	draw_list_t *draw_lists[2] = { draw_list_bg, draw_list };

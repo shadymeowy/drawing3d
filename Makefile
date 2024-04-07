@@ -4,9 +4,9 @@ BUILD_DIR := ./build
 SRC_DIRS := ./src
 INC_DIR := ./include
 EXAMPLE_DIR := ./examples
-CFLAGS := -O2 $(shell pkg-config --cflags cairo) $(shell pkg-config --cflags sdl2)
-CXXFLAGS := -O2 $(shell pkg-config --cflags cairo) $(shell pkg-config --cflags sdl2)
-LDFLAGS_STATIC := $(shell pkg-config --libs cairo) $(shell pkg-config --libs sdl2) -lm
+CFLAGS := -O2 $(shell pkg-config --cflags cairo) $(shell pkg-config --cflags sdl2) -Wall -Wextra -Werror -std=c11
+CXXFLAGS := -O2 $(shell pkg-config --cflags cairo) $(shell pkg-config --cflags sdl2) -Wall -Wextra -Werror -std=c++17
+LDFLAGS_STATIC := $(shell pkg-config --libs cairo) $(shell pkg-config --libs sdl2) -lm -Wall -Wextra -Werror
 LDFLAGS_EXAMPLE := -ldrawing3d $(LDFLAGS_STATIC)
 
 # check platform for adding -fpic or equivalent
