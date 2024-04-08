@@ -246,3 +246,4 @@ cython_debug/
 #.idea/
 *.svg
 **/wheelhouse/**
+examples/.gdb_history
