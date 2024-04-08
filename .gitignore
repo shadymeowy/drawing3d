@@ -247,3 +247,4 @@ cython_debug/
 *.svg
 **/wheelhouse/**
 examples/.gdb_history
+drawing3d/version.py
