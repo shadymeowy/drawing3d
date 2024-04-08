@@ -11,11 +11,13 @@ readme = "README.md"
 urls = {Homepage = "https://github.com/shadymeowy/python-drawing3d"}
 dynamic = ["version"]
 
+[tool.setuptools]
+packages = [
+    "drawing3d"
+]
+
 [tool.setuptools_scm]
 write_to = "drawing3d/version.py"
-
-[tool.setuptools]
-packages = ["find:"]
 
 [tool.cibuildwheel]
 # Build on manylinux and macOS
