@@ -1,3 +1,22 @@
+[build-system]
+requires = ["setuptools", "wheel", "cffi>=1.0.0", "setuptools_scm", "cibuildwheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "drawing3d"
+description = "A drawing 3D library for easy visualization"
+authors = [{name = "Tolga Demirdal"}]
+dependencies = ["cffi>=1.0.0", "numpy>=1.0.0"]
+readme = "README.md"
+urls = {Homepage = "https://github.com/shadymeowy/python-drawing3d"}
+dynamic = ["version"]
+
+[tool.setuptools_scm]
+write_to = "drawing3d/version.py"
+
+[tool.setuptools]
+packages = ["find:"]
+
 [tool.cibuildwheel]
 # Build on manylinux and macOS
 build = "cp38-* cp39-* cp310-* cp311-* cp312-*"
