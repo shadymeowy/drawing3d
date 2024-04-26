@@ -54,6 +54,7 @@ int camera_distance_set(camera_t *camera, double distance);
 int camera_distance_get(camera_t *camera, double *distance);
 int camera_distance_add(camera_t *camera, double distance);
 int camera_perspective(camera_t *camera, double hfov, double vfov);
+int camera_perspective2(camera_t *camera, double hfov, double vfov, double cx, double cy);
 int camera_orthographic(camera_t *camera, double scale_x, double scale_y);
 int camera_viewport_set(camera_t *camera, int width, int height);
 int camera_viewport_get(camera_t *camera, int *width, int *height);

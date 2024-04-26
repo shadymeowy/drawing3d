@@ -202,6 +202,24 @@ int camera_perspective(camera_t *camera, double hfov, double vfov)
 	return 0;
 }
 
+int camera_perspective2(camera_t *camera, double hfov, double vfov, double cx,
+			double cy)
+{
+	double fx = 0.5 / tan(hfov / 2.0);
+	double fy = 0.5 / tan(vfov / 2.0);
+	for (int i = 0; i < 16; i++) {
+		camera->mi[i] = 0.0;
+	}
+	camera->mi[0 * 4 + 0] = fx;
+	camera->mi[1 * 4 + 1] = fy;
+	camera->mi[0 * 4 + 2] = cx;
+	camera->mi[1 * 4 + 2] = cy;
+	camera->mi[2 * 4 + 2] = 1.0;
+	camera->mi[3 * 4 + 2] = 1.0;
+	camera->ratio = fx / fy;
+	return 0;
+}
+
 int camera_orthographic(camera_t *camera, double scale_x, double scale_y)
 {
 	for (int i = 0; i < 16; i++) {

@@ -90,6 +90,9 @@ class Camera:
     def set_perspective(self, hfov, vfov):
         return lib.camera_perspective(self.obj, hfov, vfov)
 
+    def set_perspective2(self, hfov, vfov, cx, cy):
+        return lib.camera_perspective2(self.obj, hfov, vfov, cx, cy)
+
     def set_orthographic(self, scale_x, scale_y):
         return lib.camera_orthographic(self.obj, scale_x, scale_y)
 
