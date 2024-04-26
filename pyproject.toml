@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools", "wheel", "cffi>=1.0.0", "setuptools_scm", "cibuildwheel"]
+requires = ["setuptools>=64", "wheel", "cffi>=1.0.0", "setuptools_scm>=8", "cibuildwheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
