@@ -13,7 +13,7 @@ event_list_t *event_list_create()
 		return NULL;
 	event_list->length = 0;
 	event_list->capacity = 4;
-	event_list->events = calloc(sizeof(SDL_Event), event_list->capacity);
+	event_list->events = calloc(event_list->capacity, sizeof(SDL_Event));
 	if (event_list->events == NULL) {
 		free(event_list);
 		return NULL;
